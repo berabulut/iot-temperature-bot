@@ -9,14 +9,14 @@ var transporter = nodemailer.createTransport({
   },
 });
 
-var mailOptions = {
-  from: "sicaklikbotu@gmail.com",
-  to: "sicaklikbotu@gmail.com",
-  subject: "Sending Email using Node.js",
-  html: "<h1>Welcome</h1><p>That was easy!</p>",
-};
+const mailTemperature = (temperature) => {
+  var mailOptions = {
+    from: "sicaklikbotu@gmail.com",
+    to: "sicaklikbotu@gmail.com",
+    subject: `Sicaklik : ${temperature}`,
+    html: "<h1>Welcome</h1><p>That was easy!</p>",
+  };
 
-const mail = () => {
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
@@ -26,4 +26,4 @@ const mail = () => {
   });
 };
 
-module.exports = { mail }
+module.exports = { mailTemperature };

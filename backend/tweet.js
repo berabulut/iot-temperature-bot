@@ -8,14 +8,18 @@ const client = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
 });
 
-const tweet = () => {
-  client.post("statuses/update", { status: "I am a tweet" }, function (error) {
-    if (!error) {
-      console.log("tweet atildi");
-    } else {
-      console.log("tweet atilamadi : ", error);
+const tweetTemperature = (temperature) => {
+  client.post(
+    "statuses/update",
+    { status: `Sicaklik : ${temperature}` },
+    function (error) {
+      if (!error) {
+        console.log("tweet atildi");
+      } else {
+        console.log("tweet atilamadi : ", error);
+      }
     }
-  });
+  );
 };
 
-module.exports = { tweet };
+module.exports = { tweetTemperature };

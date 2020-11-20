@@ -1,9 +1,9 @@
-const { tweet } = require("./tweet");
-const { mail } = require("./mail");
+const { tweetTemperature } = require("./tweet");
+const { mailTemperature } = require("./mail");
 const { fetchTemperature } = require("./firebase");
 
-let temp = fetchTemperature()
-temp.then((val) => {
-	console.log(val)
-})
-console.log(temp)
+fetchTemperature()
+.then((value) => {
+  tweetTemperature(value);
+  mailTemperature(value);
+});
