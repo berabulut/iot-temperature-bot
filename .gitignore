@@ -9,3 +9,5 @@
 
 # Serverless directories
 **/.serverless
+
+.vscode
