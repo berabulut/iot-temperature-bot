@@ -8,18 +8,18 @@ const client = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
 });
 
-const tweetTemperature = (temperature) => {
+const tweetTemperature = (text) => new Promise((resolve, reject) => {
   client.post(
     "statuses/update",
-    { status: `Sicaklik : ${temperature}` },
+    { status: text },
     function (error) {
       if (!error) {
-        console.log("tweet atildi");
+        resolve(true);
       } else {
-        console.log("tweet atilamadi : ", error);
+        reject(false);
       }
     }
   );
-};
+});
 
 module.exports = { tweetTemperature };

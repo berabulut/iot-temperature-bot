@@ -1,9 +1,10 @@
-const { tweetTemperature } = require("./tweet");
-const { mailTemperature } = require("./mail");
-const { fetchTemperature } = require("./firebase");
+const { tweetTemperature } = require("./handler-functions/tweet");
+const { mailTemperature } = require("./handler-functions/mail");
+const { fetchTemperature, fetchLocation } = require("./handler-functions/firebase");
+const { reverseCoordinates } = require("./handler-functions/location");
+const { resolveContent } = require("nodemailer/lib/shared");
 
-fetchTemperature()
+const promise = Promise.all([reverseCoordinates(), fetchTemperature()])
 .then((value) => {
-  tweetTemperature(value);
-  mailTemperature(value);
-});
+  console.log(value[0])
+})
