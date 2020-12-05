@@ -9,7 +9,7 @@ module.exports.tweet = async function (event, context, callback) {
   context.callbackWaitsForEmptyEventLoop = false;
   try {
     const values = await Promise.all([
-      reverseCoordinates(),
+      reverseCoordinates(), // function for finding location name from coordinates
       fetchTemperature(),
     ]);
     try {

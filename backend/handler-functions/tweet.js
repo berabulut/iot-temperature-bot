@@ -16,7 +16,6 @@ const tweetTemperature = (text) => new Promise((resolve, reject) => {
       if (!error) {
         resolve(true);
       } else {
-        console.log("tweet atilamadi : ", error);
         reject(false);
       }
     }

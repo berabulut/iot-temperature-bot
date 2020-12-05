@@ -8,7 +8,7 @@ module.exports.mail = async function (event, context, callback) {
   context.callbackWaitsForEmptyEventLoop = false;
   try {
     const values = await Promise.all([
-      reverseCoordinates(),
+      reverseCoordinates(), // function for finding location name from coordinates
       fetchTemperature(),
     ]);
     try {
@@ -20,7 +20,7 @@ module.exports.mail = async function (event, context, callback) {
       const response = {
         statusCode: 200,
         body: JSON.stringify({
-          message: "Tweet başarıyla atıldı",
+          message: "Mail başarıyla gönderildi",
         }),
       };
       callback(null, response);
@@ -28,7 +28,7 @@ module.exports.mail = async function (event, context, callback) {
       const response = {
         statusCode: 401,
         body: JSON.stringify({
-          message: err,
+          message: "Mail gönderilemedi.. " + err,
         }),
       };
       callback(null, response);
@@ -37,7 +37,7 @@ module.exports.mail = async function (event, context, callback) {
     const response = {
       statusCode: 500,
       body: JSON.stringify({
-        message: err,
+        message: "Mail gönderilemedi.. " + err,
       }),
     };
     callback(null, response);
