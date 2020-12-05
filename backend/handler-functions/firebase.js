@@ -8,10 +8,10 @@ admin.initializeApp({
 });
 
 const db = admin.database();
-const temperature_ref = db.ref("/sicaklik"); //Set the current directory you are working in
+const temperature_ref = db.ref("/sicaklik"); 
 const location_ref = db.ref("/location");
 
-const fetchTemperature = () =>
+const fetchTemperature = () => // fetch temperature info of arduino's sensor from firebase
   new Promise((resolve, reject) => {
     temperature_ref
       .once("value", function (snapshot) {
@@ -23,7 +23,7 @@ const fetchTemperature = () =>
       });
   });
 
-const fetchLocation = () =>
+const fetchLocation = () => // fetch coordinates of arduino module's from firebase
   new Promise((resolve, reject) => {
     location_ref
       .once("value", function (snapshot) {
