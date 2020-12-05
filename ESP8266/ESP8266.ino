@@ -4,10 +4,10 @@
 #include <ArduinoJson.h>
 #include "DHT.h"
 
-#define WIFI_SSID "Keenetic-7388"
-#define WIFI_PASSWORD "hberabulut"
-#define FIREBASE_HOST "iot-test-7444b.firebaseio.com"
-#define FIREBASE_AUTH "0rjh7xSpcSEVnLjpLGRawQfhOHCn5WzwBQkomtkw"
+#define WIFI_SSID ""
+#define WIFI_PASSWORD ""
+#define FIREBASE_HOST ""
+#define FIREBASE_AUTH ""
 #define DHTTYPE DHT11      // DHT11 SENSOR
 #define DEVICE_ID "100001" // Unique id for this device
 
@@ -15,7 +15,7 @@ FirebaseData firebaseData;
 
 const char *Host = "www.googleapis.com";
 String thisPage = "/geolocation/v1/geolocate?key=";
-String key = "AIzaSyCgHOaADgq3qx7jxqZScVOBT_Jizw3GmTo"; // Google Cloud Api key for GEOLOCATION Api
+String key = ""; // Google Cloud Api key for GEOLOCATION Api
 
 uint8_t DHTPin = D2;
 DHT dht(DHTPin, DHTTYPE); // Initialize DHT sensor.
@@ -88,7 +88,7 @@ void loop()
       firebaseLocation[0] += "/location/latitude";
 
       firebaseLocation[1] += DEVICE_ID;
-      firebaseLocation[1] += "/location/longitude"
+      firebaseLocation[1] += "/location/longitude";
 
       updateFirebaseLocation(firebaseLocation[0], latitude);
       updateFirebaseLocation(firebaseLocation[1], longitude);
