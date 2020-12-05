@@ -1,8 +1,8 @@
 **/node_modules
 **/.env
 **/serviceAccountKey.json
-**/ESP8266 
-
+**/.ino
+/ESP8266/ESP8266.ino
 
 # package directories
 **/jspm_packages
