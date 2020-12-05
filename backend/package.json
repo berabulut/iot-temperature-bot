@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.0",
+    "dateformat": "^4.2.2",
     "dotenv": "^8.2.0",
     "firebase-admin": "^9.4.1",
     "nodemailer": "^6.4.16",

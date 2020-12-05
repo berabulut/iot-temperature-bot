@@ -1,9 +1,9 @@
 const { tweetTemperature } = require("./handler-functions/tweet");
 const { mailTemperature } = require("./handler-functions/mail");
-const { fetchTemperature } = require("./handler-functions/firebase");
+const { fetchTemperature, fetchLocation } = require("./handler-functions/firebase");
+const { reverseCoordinates } = require("./handler-functions/location");
 
-fetchTemperature()
+const promise = Promise.all([reverseCoordinates(), fetchTemperature()])
 .then((value) => {
-  tweetTemperature(value);
-  mailTemperature(value);
-});
+  console.log(value[0])
+})

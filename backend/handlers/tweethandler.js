@@ -1,78 +1,43 @@
-"use strict";
-
 const { tweetTemperature } = require("../handler-functions/tweet");
 const { fetchTemperature } = require("../handler-functions/firebase");
+const { reverseCoordinates } = require("../handler-functions/location");
+const dateFormat = require("dateformat");
 
+("use strict");
 module.exports.tweet = async function (event, context, callback) {
-  let response = {};
-  const promise = new Promise(function (resolve, reject) {
-    fetchTemperature()
-      .then((value) => {
-        tweetTemperature(value)
-        .then((val) => {
-          response = {
+  Promise.all([reverseCoordinates(), fetchTemperature()])
+    .then((value) => {
+      const date = dateFormat(new Date());
+      const location = value[0];
+      const temperature = value[1];
+      const text = `${location},  ${date}, Sıcaklık : ${temperature}°C`;
+      tweetTemperature(text)
+        .then(() => {
+          const response = {
             statusCode: 200,
             body: JSON.stringify({
-              message: "tweet atildi " + val,
-              input: event,
+              message: "Tweet başarıyla atıldı",
             }),
           };
-          resolve(response);
+          callback(null, response)
         })
         .catch((err) => {
-          response = {
+          const response = {
             statusCode: 401,
             body: JSON.stringify({
-              message: "tweet atilamadi " + err,
-              input: event,
+              message: "Tweet atılamadı " + err,
             }),
           };
-          reject(response);
-        })
-      })
-      .catch((err) => {
-        response = {
-          statusCode: 500,
-          body: JSON.stringify({
-            message: err,
-            input: event,
-          }),
-        };
-        reject(response);
-      });
-  });
-  return promise;
+          callback(null, response)
+        });
+    })
+    .catch((err) => {
+      const response = {
+        statusCode: 500,
+        body: JSON.stringify({
+          message: err,
+        }),
+      };
+      callback(null, response)
+    });
 };
-
-
-
-// module.exports.tweet = async (event) => {
-//   fetchTemperature()
-//     .then((value) => {
-//       tweetTemperature(value);
-//       return {
-//         statusCode: 200,
-//         body: JSON.stringify(
-//           {
-//             message: value,
-//             input: event,
-//           },
-//           null,
-//           2
-//         ),
-//       };
-//     })
-//     .catch((err) => {
-//       return {
-//         statusCode: 400,
-//         body: JSON.stringify(
-//           {
-//             message: err,
-//             input: event,
-//           },
-//           null,
-//           2
-//         ),
-//       };
-//     });
-// };

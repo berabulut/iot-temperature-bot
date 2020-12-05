@@ -7,20 +7,32 @@ admin.initializeApp({
   databaseURL: process.env.DATABASE_URL,
 });
 
-var db = admin.database();
-var ref = db.ref("/sicaklik"); //Set the current directory you are working in
+const db = admin.database();
+const temperature_ref = db.ref("/sicaklik"); //Set the current directory you are working in
+const location_ref = db.ref("/location");
 
 const fetchTemperature = () =>
   new Promise((resolve, reject) => {
-    ref.once("value", function (snapshot) {
-	  var data = snapshot.val(); //Data is in JSON format.
-	  resolve(data)
-	})
-	.catch((err) => {
-		reject(err)
-	})
+    temperature_ref
+      .once("value", function (snapshot) {
+        const data = snapshot.val(); //Data is in JSON format.
+        resolve(data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
 
-module.exports = { fetchTemperature };
+const fetchLocation = () =>
+  new Promise((resolve, reject) => {
+    location_ref
+      .once("value", function (snapshot) {
+        const data = snapshot.val(); //Data is in JSON format.
+        resolve(data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
 
-//   .then(() => admin.app().delete())
+module.exports = { fetchTemperature, fetchLocation };

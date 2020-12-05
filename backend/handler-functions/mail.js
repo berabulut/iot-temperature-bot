@@ -9,11 +9,11 @@ var transporter = nodemailer.createTransport({
   },
 });
 
-const mailTemperature = (temperature) => {
+const mailTemperature = (text) => {
   var mailOptions = {
     from: "sicaklikbotu@gmail.com",
     to: "sicaklikbotu@gmail.com",
-    subject: `Sicaklik : ${temperature}`,
+    subject: `Sicaklik : ${text}`,
     html: "<h1>Welcome</h1><p>That was easy!</p>",
   };
 
