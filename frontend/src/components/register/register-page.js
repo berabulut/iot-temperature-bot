@@ -1,6 +1,8 @@
 import React from "react";
 import { withStyles, Typography, Link } from "@material-ui/core";
 import RegisterForm from "./register-form";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 export const pageStyles = (theme) => ({
   container: {
@@ -28,19 +30,35 @@ export const pageStyles = (theme) => ({
     marginBottom: "50px",
   },
   createAccountLink: {
-    color: "white"
-  }
+    color: "white",
+  },
 });
+
+const Alert = (props) => {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+};
+
 
 const RegisterPage = (props) => {
   const { classes } = props;
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const closeAlert = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+  
+    setOpenAlert(false);
+  };
+  const OpenAlert = () => {
+    setOpenAlert(true);
+  }
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
         <Typography className={classes.formTitle} variant="h4">
           REGISTER
         </Typography>
-        <RegisterForm />
+        <RegisterForm openAlert={OpenAlert} />
         <Link
           className={classes.createAccountLink}
           variant="subtitle1"
@@ -49,6 +67,11 @@ const RegisterPage = (props) => {
           Login
         </Link>
       </div>
+      <Snackbar open={openAlert} autoHideDuration={6000} onClose={closeAlert}>
+        <Alert onClose={closeAlert} severity="success">
+          This is a success message!
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

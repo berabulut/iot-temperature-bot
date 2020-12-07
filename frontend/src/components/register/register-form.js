@@ -1,6 +1,7 @@
 import React from "react";
-import { Paper, withStyles, Grid, TextField, Button} from "@material-ui/core";
+import { Paper, withStyles, Grid, TextField, Button } from "@material-ui/core";
 import { Face, Fingerprint } from "@material-ui/icons";
+import { useHistory } from "react-router-dom";
 
 const formStyles = (theme) => ({
   margin: {
@@ -10,20 +11,46 @@ const formStyles = (theme) => ({
     padding: theme.spacing.unit,
   },
   paper: {
-    width: '100%',
-    margin: 'auto'
+    width: "100%",
+    margin: "auto",
   },
   gridContainer: {
-    paddingTop: '15px'
-  }
+    paddingTop: "15px",
+  },
 });
 
 const RegisterForm = (props) => {
   const { classes } = props;
+  const [mailInput, setMailInput] = React.useState("");
+  const [passwordInput, setPasswordInput] = React.useState("");
+  const history = useHistory();
+
+  const handleChange = (e) => {
+    if (e.target.id === "email") {
+      setMailInput(e.target.value);
+    } else {
+      setPasswordInput(e.target.value);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("api call", {
+      email: mailInput,
+      password: passwordInput,
+    });
+    props.openAlert();
+  };
+
   return (
     <Paper className={(classes.padding, classes.paper)}>
       <div className={classes.margin}>
-        <Grid className={classes.gridContainer} container spacing={4} alignItems="flex-end">
+        <Grid
+          className={classes.gridContainer}
+          container
+          spacing={4}
+          alignItems="flex-end"
+        >
           <Grid item>
             <Face />
           </Grid>
@@ -35,10 +62,16 @@ const RegisterForm = (props) => {
               fullWidth
               autoFocus
               required
+              onChange={handleChange}
             />
           </Grid>
         </Grid>
-        <Grid className={classes.gridContainer} container spacing={4} alignItems="flex-end">
+        <Grid
+          className={classes.gridContainer}
+          container
+          spacing={4}
+          alignItems="flex-end"
+        >
           <Grid item>
             <Fingerprint />
           </Grid>
@@ -52,8 +85,14 @@ const RegisterForm = (props) => {
             />
           </Grid>
         </Grid>
-        <Grid className={classes.gridContainer} container justify="center" style={{ marginTop: "10px", paddingBottom:"15px" }}>
+        <Grid
+          className={classes.gridContainer}
+          container
+          justify="center"
+          style={{ marginTop: "10px", paddingBottom: "15px" }}
+        >
           <Button
+            onClick={handleSubmit}
             variant="outlined"
             color="primary"
             style={{ textTransform: "none", marginBottom: "10px" }}

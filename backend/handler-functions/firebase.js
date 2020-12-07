@@ -8,10 +8,11 @@ admin.initializeApp({
 });
 
 const db = admin.database();
-const temperature_ref = db.ref("/sicaklik"); 
+const temperature_ref = db.ref("/sicaklik");
 const location_ref = db.ref("/location");
 
-const fetchTemperature = () => // fetch temperature info of arduino's sensor from firebase
+const fetchTemperature = () =>
+  // fetch temperature info of arduino's sensor from firebase
   new Promise((resolve, reject) => {
     temperature_ref
       .once("value", function (snapshot) {
@@ -23,7 +24,8 @@ const fetchTemperature = () => // fetch temperature info of arduino's sensor fro
       });
   });
 
-const fetchLocation = () => // fetch coordinates of arduino module's from firebase
+const fetchLocation = () =>
+  // fetch coordinates of arduino module's from firebase
   new Promise((resolve, reject) => {
     location_ref
       .once("value", function (snapshot) {
@@ -35,4 +37,78 @@ const fetchLocation = () => // fetch coordinates of arduino module's from fireba
       });
   });
 
-module.exports = { fetchTemperature, fetchLocation };
+const getUsers = () =>
+  new Promise((resolve, reject) => {
+    const user_ref = db.ref(`/users`);
+    user_ref
+      .once("value", (snapshot) => {
+        const data = snapshot.val(); //Data is in JSON format.
+        resolve(data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+
+const checkIfUserExists = (email) =>
+  new Promise((resolve, reject) => {
+    getUsers()
+      .then((records) => {
+        let check = false;
+        records.map((record, key) => {
+          if (record.email.trim() === email.trim()) {
+            check = true;
+          }
+        });
+        resolve(check);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+
+const createNewUser = (email, password, recordsLength) =>
+  new Promise((resolve, reject) => {
+    const create_user_ref = db.ref(`/users/${recordsLength}`);
+    checkIfUserExists(email)
+      .then((value) => {
+        if (value !== true) {
+          create_user_ref.set({
+            email: email,
+            password: password,
+          });
+          const number_of_users_ref = db.ref(`/`);
+          number_of_users_ref.update({
+            number_of_users: recordsLength + 1,
+          });
+
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+
+const getNumberOfUsers = () =>
+  new Promise((resolve, reject) => {
+    const number_of_users_ref = db.ref(`/number_of_users`);
+    number_of_users_ref
+      .once("value", (snapshot) => {
+        const data = snapshot.val(); //Data is in JSON format.
+        resolve(data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+
+module.exports = {
+  fetchTemperature,
+  fetchLocation,
+  checkIfUserExists,
+  createNewUser,
+  getNumberOfUsers
+};
