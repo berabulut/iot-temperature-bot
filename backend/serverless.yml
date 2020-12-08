@@ -2,8 +2,7 @@ service: backend
 app: temperature-bot
 org: berabulut
 
-
-frameworkVersion: '2'
+frameworkVersion: "2"
 
 provider:
   name: aws
@@ -25,7 +24,7 @@ functions:
     timeout: 30
     description: Mail fetched temperature.
     events:
-      - http: 
+      - http:
           path: mail
           method: get
     iamRoleStatements:
@@ -36,15 +35,23 @@ functions:
           - logs:PutLogEvents
         Resource: "arn:aws:lambda:us-east-1:211144193599:function:backend-dev-mail"
 
-
   tweet:
     handler: handlers/tweethandler.tweet
     timeout: 30
-    description: Mail fetched temperature.
+    description: Tweet fetched temperature.
     events:
-      - http: 
+      - http:
           path: tweet
           method: get
+
+  createUser:
+    handler: handlers/userHandler.createUser
+    timeout: 30
+    description: Create a new user in db.
+    events:
+      - http:
+          path: createUser
+          method: post
 
 plugins:
   - serverless-offline
