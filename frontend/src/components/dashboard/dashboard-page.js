@@ -17,6 +17,7 @@ const pageStyles = (theme) => ({
     width: "100%",
     height: "100%",
     background: "#2A324D",
+    overflow: "auto"
   },
 
   appbar: {
@@ -28,7 +29,7 @@ const DashboardPage = (props) => {
   const storeStates = useStoreState(GlobalStates);
   const { classes } = props;
 
-  if (storeStates.loginStatus) {
+  if (storeStates.loginStatus || props.location.state.loginStatus) {
     return (
       <div className={classes.container}>
         <AppBar className={classes.appbar} position="static">

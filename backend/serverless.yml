@@ -65,6 +65,25 @@ functions:
           path: login
           method: post
           cors: true
+  getSensorData:
+    handler: handlers/sensorHandler.sensorData
+    timeout: 30
+    description: Fetch sensor data from db
+    events:
+      - http:
+          path: getSensorData
+          method: post
+          cors: true
+  getLocationData:
+    handler: handlers/locationHandler.location
+    timeout: 30
+    description: Fetch location data from db
+    events:
+      - http:
+          path: getLocationData
+          method: post
+          cors: true
+
 
 plugins:
   - serverless-offline

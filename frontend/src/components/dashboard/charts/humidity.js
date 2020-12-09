@@ -24,6 +24,7 @@ const HumidityChart = (props) => {
         styles={buildStyles({
           textColor: "white",
           pathColor: "#660F57",
+          trailColor: "white"
         })}
         value={percentage}
         text={`${percentage}%`}

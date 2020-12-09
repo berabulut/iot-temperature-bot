@@ -9,7 +9,6 @@ admin.initializeApp({
 
 const db = admin.database();
 const temperature_ref = db.ref("/sicaklik");
-const location_ref = db.ref("/location");
 
 const fetchTemperature = () =>
   // fetch temperature info of arduino's sensor from firebase
@@ -24,9 +23,9 @@ const fetchTemperature = () =>
       });
   });
 
-const fetchLocation = () =>
-  // fetch coordinates of arduino module's from firebase
+const fetchLocation = (deviceID) =>
   new Promise((resolve, reject) => {
+    const location_ref = db.ref(`/${deviceID}/location`);
     location_ref
       .once("value", function (snapshot) {
         const data = snapshot.val(); //Data is in JSON format.
@@ -135,6 +134,19 @@ const login = (email, password) =>
       });
   });
 
+const getSensorData = (deviceID) =>
+  new Promise((resolve, reject) => {
+    const sensor_ref = db.ref(`/${deviceID}`);
+    sensor_ref
+      .once("value", (snapshot) => {
+        const data = snapshot.val();
+        resolve(data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+
 module.exports = {
   fetchTemperature,
   fetchLocation,
@@ -142,4 +154,5 @@ module.exports = {
   createNewUser,
   getNumberOfUsers,
   login,
+  getSensorData,
 };
