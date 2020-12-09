@@ -67,7 +67,7 @@ const checkIfUserExists = (email) =>
       });
   });
 
-const createNewUser = (email, password, recordsLength) =>
+const createNewUser = (email, password, deviceID, recordsLength) =>
   new Promise((resolve, reject) => {
     const create_user_ref = db.ref(`/users/${recordsLength}`);
     checkIfUserExists(email)
@@ -76,6 +76,7 @@ const createNewUser = (email, password, recordsLength) =>
           create_user_ref.set({
             email: email,
             password: password,
+            deviceID: deviceID,
           });
           const number_of_users_ref = db.ref(`/`);
           number_of_users_ref.update({
@@ -105,10 +106,40 @@ const getNumberOfUsers = () =>
       });
   });
 
+const login = (email, password) =>
+  new Promise((resolve, reject) => {
+    getUsers()
+      .then((records) => {
+        let status = false;
+        let deviceID = "";
+        if (records !== undefined) {
+          records.map((record) => {
+            if (record.email === email && record.password === password) {
+              status = true;
+              deviceID = record.deviceID;
+            }
+          });
+        } else {
+          status = false;
+        }
+
+        resolve({
+          status: status,
+          deviceID: deviceID,
+        });
+      })
+      .catch((err) => {
+        resolve({
+          status: false,
+        });
+      });
+  });
+
 module.exports = {
   fetchTemperature,
   fetchLocation,
   checkIfUserExists,
   createNewUser,
-  getNumberOfUsers
+  getNumberOfUsers,
+  login,
 };

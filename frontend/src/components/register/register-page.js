@@ -42,6 +42,8 @@ const Alert = (props) => {
 const RegisterPage = (props) => {
   const { classes } = props;
   const [openAlert, setOpenAlert] = React.useState(false);
+  const [alertType, setAlertType] = React.useState("success")
+  const [message, setMessage] = React.useState("")
   const closeAlert = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -49,8 +51,12 @@ const RegisterPage = (props) => {
   
     setOpenAlert(false);
   };
-  const OpenAlert = () => {
-    setOpenAlert(true);
+  const OpenAlert = (alertType, message) => {
+    setMessage(message)
+    setAlertType(alertType)
+    setTimeout(() => {
+      setOpenAlert(true);
+    }, 200)
   }
   return (
     <div className={classes.container}>
@@ -68,8 +74,8 @@ const RegisterPage = (props) => {
         </Link>
       </div>
       <Snackbar open={openAlert} autoHideDuration={6000} onClose={closeAlert}>
-        <Alert onClose={closeAlert} severity="success">
-          This is a success message!
+        <Alert onClose={closeAlert} severity={alertType}>
+          {message}
         </Alert>
       </Snackbar>
     </div>

@@ -27,6 +27,7 @@ functions:
       - http:
           path: mail
           method: get
+          cors: true
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -43,6 +44,7 @@ functions:
       - http:
           path: tweet
           method: get
+          cors: true
 
   createUser:
     handler: handlers/userHandler.createUser
@@ -52,6 +54,17 @@ functions:
       - http:
           path: createUser
           method: post
+          cors: true
+  
+  login:
+    handler: handlers/userHandler.login
+    timeout: 30
+    description: Login user
+    events:
+      - http:
+          path: login
+          method: post
+          cors: true
 
 plugins:
   - serverless-offline

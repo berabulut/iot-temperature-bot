@@ -1,7 +1,8 @@
 import React from "react";
 import { Paper, withStyles, Grid, TextField, Button } from "@material-ui/core";
-import { Face, Fingerprint } from "@material-ui/icons";
+import { Face, Fingerprint, DeveloperBoard } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
+import { createUser } from "../../api";
 
 const formStyles = (theme) => ({
   margin: {
@@ -23,23 +24,43 @@ const RegisterForm = (props) => {
   const { classes } = props;
   const [mailInput, setMailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
+  const [deviceIDInput, setDeviceIDInput] = React.useState("");
   const history = useHistory();
 
   const handleChange = (e) => {
     if (e.target.id === "email") {
       setMailInput(e.target.value);
-    } else {
+    } else if (e.target.id === "password") {
       setPasswordInput(e.target.value);
+    } else if (e.target.id === "deviceID") {
+      setDeviceIDInput(e.target.value);
     }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("api call", {
+    let formJSON = JSON.stringify({
       email: mailInput,
       password: passwordInput,
+      deviceID: deviceIDInput,
     });
-    props.openAlert();
+
+    createUser(formJSON)
+      .then((value) => {
+        if (value.statusCode === 201) {
+          props.openAlert("success", value.message);
+          setTimeout(() => {
+            history.push("/");
+          }, 750);
+        } else if (value.statusCode === 200) {
+          props.openAlert("error", value.message);
+        } else {
+          props.openAlert("error", "Something is wrong!");
+        }
+      })
+      .catch((err) => {
+        props.openAlert("error", err);
+      });
   };
 
   return (
@@ -82,6 +103,27 @@ const RegisterForm = (props) => {
               type="password"
               fullWidth
               required
+              onChange={handleChange}
+            />
+          </Grid>
+        </Grid>
+        <Grid
+          className={classes.gridContainer}
+          container
+          spacing={4}
+          alignItems="flex-end"
+        >
+          <Grid item>
+            <DeveloperBoard />
+          </Grid>
+          <Grid item md={true} sm={true} xs={true}>
+            <TextField
+              id="deviceID"
+              label="Device-ID"
+              type="device"
+              fullWidth
+              required
+              onChange={handleChange}
             />
           </Grid>
         </Grid>
