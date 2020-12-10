@@ -9,13 +9,13 @@ var transporter = nodemailer.createTransport({
   },
 });
 
-const mailTemperature = (text, mails) =>
+const mailTemperature = (dataObject) =>
   new Promise((resolve, reject) => {
     const mailOptions = {
       from: "sicaklikbotu@gmail.com",
-      to: mails.toString(),
+      to: dataObject.mails.toString(),
       subject: `Temperature`,
-      html: `<h1>${text}</h1>`,
+      html: `<h1>Location : ${dataObject.location}</h1><br/><h1>Date : ${dataObject.date}</h1><br/><h1>Temperature : ${dataObject.temperature}°C</h1><br/><h1>Humidity : ${dataObject.humidity}%</h1><br/>`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {

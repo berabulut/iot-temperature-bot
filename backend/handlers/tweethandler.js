@@ -12,7 +12,7 @@ module.exports.tweet = async (event, context, callback) => {
     const temperature = userData.temperature;
     const humidity = userData.humidity;
     const location = userData.location;
-    const text = `${location},  ${date}, Sıcaklık : ${temperature}°C, Humidity : ${humidity}`;
+    const text = `${location},  ${date}, Temperature : ${temperature}°C, Humidity : ${humidity}`;
     tweetTemperature(text)
       .then(() => {
         const response = {

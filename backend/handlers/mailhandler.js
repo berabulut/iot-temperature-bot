@@ -11,8 +11,15 @@ module.exports.mail = async (event, context, callback) => {
     const humidity = userData.humidity;
     const location = userData.location;
     const mails = userData.mails;
+    const dataObject = {
+      location: location,
+      temperature: temperature,
+      mails: mails,
+      humidity: humidity,
+      date: date
+    }
     const text = `${location},  ${date}, Temperature : ${temperature}°C, Humidity : ${humidity}%`;
-    mailTemperature(text, mails)
+    mailTemperature(dataObject)
     .then(() => {
         const response = {
           statusCode: 200,
