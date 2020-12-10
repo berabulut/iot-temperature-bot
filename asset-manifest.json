@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/twitter-temperature-bot/static/css/main.feac9348.chunk.css",
-    "main.js": "/twitter-temperature-bot/static/js/main.840b823d.chunk.js",
-    "main.js.map": "/twitter-temperature-bot/static/js/main.840b823d.chunk.js.map",
-    "runtime-main.js": "/twitter-temperature-bot/static/js/runtime-main.2696ad95.js",
-    "runtime-main.js.map": "/twitter-temperature-bot/static/js/runtime-main.2696ad95.js.map",
-    "static/css/2.2430edc5.chunk.css": "/twitter-temperature-bot/static/css/2.2430edc5.chunk.css",
-    "static/js/2.83965e16.chunk.js": "/twitter-temperature-bot/static/js/2.83965e16.chunk.js",
-    "static/js/2.83965e16.chunk.js.map": "/twitter-temperature-bot/static/js/2.83965e16.chunk.js.map",
-    "static/js/3.c17c6c1e.chunk.js": "/twitter-temperature-bot/static/js/3.c17c6c1e.chunk.js",
-    "static/js/3.c17c6c1e.chunk.js.map": "/twitter-temperature-bot/static/js/3.c17c6c1e.chunk.js.map",
-    "index.html": "/twitter-temperature-bot/index.html",
-    "static/css/2.2430edc5.chunk.css.map": "/twitter-temperature-bot/static/css/2.2430edc5.chunk.css.map",
-    "static/css/main.feac9348.chunk.css.map": "/twitter-temperature-bot/static/css/main.feac9348.chunk.css.map",
-    "static/js/2.83965e16.chunk.js.LICENSE.txt": "/twitter-temperature-bot/static/js/2.83965e16.chunk.js.LICENSE.txt",
-    "static/media/index.css": "/twitter-temperature-bot/static/media/roboto-vietnamese-400-normal.52cebac0.woff2"
+    "main.css": "/iot-temperature-bot/static/css/main.feac9348.chunk.css",
+    "main.js": "/iot-temperature-bot/static/js/main.8a3827ef.chunk.js",
+    "main.js.map": "/iot-temperature-bot/static/js/main.8a3827ef.chunk.js.map",
+    "runtime-main.js": "/iot-temperature-bot/static/js/runtime-main.d7382f5f.js",
+    "runtime-main.js.map": "/iot-temperature-bot/static/js/runtime-main.d7382f5f.js.map",
+    "static/css/2.ff6dabc5.chunk.css": "/iot-temperature-bot/static/css/2.ff6dabc5.chunk.css",
+    "static/js/2.83965e16.chunk.js": "/iot-temperature-bot/static/js/2.83965e16.chunk.js",
+    "static/js/2.83965e16.chunk.js.map": "/iot-temperature-bot/static/js/2.83965e16.chunk.js.map",
+    "static/js/3.c17c6c1e.chunk.js": "/iot-temperature-bot/static/js/3.c17c6c1e.chunk.js",
+    "static/js/3.c17c6c1e.chunk.js.map": "/iot-temperature-bot/static/js/3.c17c6c1e.chunk.js.map",
+    "index.html": "/iot-temperature-bot/index.html",
+    "static/css/2.ff6dabc5.chunk.css.map": "/iot-temperature-bot/static/css/2.ff6dabc5.chunk.css.map",
+    "static/css/main.feac9348.chunk.css.map": "/iot-temperature-bot/static/css/main.feac9348.chunk.css.map",
+    "static/js/2.83965e16.chunk.js.LICENSE.txt": "/iot-temperature-bot/static/js/2.83965e16.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/iot-temperature-bot/static/media/roboto-vietnamese-400-normal.52cebac0.woff2"
   },
   "entrypoints": [
-    "static/js/runtime-main.2696ad95.js",
-    "static/css/2.2430edc5.chunk.css",
+    "static/js/runtime-main.d7382f5f.js",
+    "static/css/2.ff6dabc5.chunk.css",
     "static/js/2.83965e16.chunk.js",
     "static/css/main.feac9348.chunk.css",
-    "static/js/main.840b823d.chunk.js"
+    "static/js/main.8a3827ef.chunk.js"
   ]
 }
