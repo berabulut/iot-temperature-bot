@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/iot-temperature-bot/static/css/main.feac9348.chunk.css",
-    "main.js": "/iot-temperature-bot/static/js/main.ebbac4e8.chunk.js",
-    "main.js.map": "/iot-temperature-bot/static/js/main.ebbac4e8.chunk.js.map",
+    "main.js": "/iot-temperature-bot/static/js/main.2a750dca.chunk.js",
+    "main.js.map": "/iot-temperature-bot/static/js/main.2a750dca.chunk.js.map",
     "runtime-main.js": "/iot-temperature-bot/static/js/runtime-main.d7382f5f.js",
     "runtime-main.js.map": "/iot-temperature-bot/static/js/runtime-main.d7382f5f.js.map",
     "static/css/2.ff6dabc5.chunk.css": "/iot-temperature-bot/static/css/2.ff6dabc5.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.ff6dabc5.chunk.css",
     "static/js/2.83965e16.chunk.js",
     "static/css/main.feac9348.chunk.css",
-    "static/js/main.ebbac4e8.chunk.js"
+    "static/js/main.2a750dca.chunk.js"
   ]
 }
