@@ -6,11 +6,9 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  IconButton,
   CircularProgress,
   Backdrop
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
 import Dashboard from "./dashboard";
 import FailedLogin from "./failed-login";
 
@@ -34,7 +32,7 @@ const pageStyles = (theme) => ({
 const DashboardPage = (props) => {
   const storeStates = useStoreState(GlobalStates);
   const { classes } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const closeProgress = () => {
     setOpen(false);

@@ -11,7 +11,7 @@ module.exports.mail = async (event, context, callback) => {
     const humidity = userData.humidity;
     const location = userData.location;
     const mails = userData.mails;
-    const text = `${location},  ${date}, Sıcaklık : ${temperature}°C, Humidity : ${humidity}`;
+    const text = `${location},  ${date}, Temperature : ${temperature}°C, Humidity : ${humidity}%`;
     mailTemperature(text, mails)
     .then(() => {
         const response = {

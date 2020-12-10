@@ -14,8 +14,8 @@ const mailTemperature = (text, mails) =>
     const mailOptions = {
       from: "sicaklikbotu@gmail.com",
       to: mails.toString(),
-      subject: `Sicaklik : ${text}`,
-      html: "<h1>Welcome</h1><p>That was easy!</p>",
+      subject: `Temperature`,
+      html: `<h1>${text}</h1>`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
