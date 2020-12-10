@@ -15,6 +15,9 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+import MailIcon from "@material-ui/icons/Mail";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import { sendMail, tweet } from "../../../api";
 
 const pageStyles = (theme) => ({
   mailInput: {
@@ -31,6 +34,15 @@ const pageStyles = (theme) => ({
   innerContainer: {
     position: "relative",
     top: "20%",
+    WebkitTransform: "translateY(-40%)",
+    MsTransform: "translateY(-40%)",
+    transform: "translateY(-40%)",
+    height: "auto",
+    overflow: "auto",
+  },
+  bottomContainer: {
+    position: "relative",
+    top: "40%",
     WebkitTransform: "translateY(-40%)",
     MsTransform: "translateY(-40%)",
     transform: "translateY(-40%)",
@@ -62,11 +74,14 @@ const pageStyles = (theme) => ({
     float: "right",
     marginRight: "5.5%",
   },
+  mail: {
+    marginRight: "5.5%"
+  }
 });
 
 const ShareData = (props) => {
   const { classes } = props;
-  const [mail, setMail] = React.useState([]);
+  const [mails, setMail] = React.useState([]);
   const [currentInput, setCurrentInput] = React.useState("");
   const [error, setError] = React.useState({
     status: false,
@@ -94,7 +109,7 @@ const ShareData = (props) => {
   };
 
   const checkIfExists = (email) => {
-    if (mail.includes(email)) {
+    if (mails.includes(email)) {
       return true;
     } else {
       return false;
@@ -102,11 +117,52 @@ const ShareData = (props) => {
   };
 
   const removeFromList = (emailIndex) => {
-    console.log(emailIndex);
-	setMail(mail.filter((email) => {
-		return email !== mail[emailIndex]
-	}))
+    setMail(
+      mails.filter((email) => {
+        return email !== mails[emailIndex];
+      })
+    );
   };
+
+  const sendMailOnClick = () => {
+    let formJSON = JSON.stringify({
+      location: props.locationData.location,
+      mails: mails,
+      temperature: returnLastObject(props.sensorData.records.sensor)
+        .temperature,
+      humidity: returnLastObject(props.sensorData.records.sensor).humidity,
+    });
+
+    sendMail(formJSON).then((value) => {
+      if (value.statusCode === 200) {
+        console.log(value.message);
+      }
+    });
+  };
+
+  const tweetOnClick = () => {
+    let formJSON = JSON.stringify({
+      location: props.locationData.location,
+      temperature: returnLastObject(props.sensorData.records.sensor)
+        .temperature,
+      humidity: returnLastObject(props.sensorData.records.sensor).humidity,
+    });
+
+    tweet(formJSON).then((value) => {
+      if (value.statusCode === 200) {
+        console.log(value.message);
+      }
+    });
+  };
+
+  const returnLastObject = (dataObject) => {
+    const data = Object.values(dataObject);
+    return data[data.length - 1];
+  };
+
+  React.useEffect(() => {
+    console.log(props);
+  }, [props]);
 
   return (
     <Paper className={classes.paper}>
@@ -128,13 +184,13 @@ const ShareData = (props) => {
         >
           Add
         </Button>
-        {mail.length > 0 && (
+        {mails.length > 0 && (
           <List
             className={classes.mailList}
             component="nav"
             aria-label="main mailbox folders"
           >
-            {mail.map((value, key) => {
+            {mails.map((value, key) => {
               return (
                 <ListItem id={key} button>
                   <ListItemText primary={value} />
@@ -151,6 +207,26 @@ const ShareData = (props) => {
             })}
           </List>
         )}
+      </div>
+      <div className={classes.bottomContainer}>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.mail}
+          endIcon={<MailIcon />}
+          onClick={sendMailOnClick}
+        >
+          Mail
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.tweet}
+          endIcon={<TwitterIcon />}
+          onClick={tweetOnClick}
+        >
+          Tweet
+        </Button>
       </div>
       {error.status === true && (
         <Typography className={classes.error} variant="p">

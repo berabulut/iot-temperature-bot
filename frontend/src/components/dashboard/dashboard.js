@@ -92,7 +92,7 @@ class Dashboard extends React.Component {
           </Grid>
           <Divider className={classes.divider} />
           <Grid item xs={12}>
-            <ShareData sensorData={this.state.sensorData} />
+            <ShareData locationData={this.state.locationData} sensorData={this.state.sensorData} />
           </Grid>
           <Divider className={classes.divider} />
         </Grid>
