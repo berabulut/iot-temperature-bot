@@ -3,7 +3,10 @@ import { withStyles, Container, Grid, Divider } from "@material-ui/core";
 import TemperatureChart from "./charts/temperature";
 import HumidityChart from "./charts/humidity";
 import LocationMap from "./charts/location";
-import { fetchLocation } from "../../api";
+import TemperatureTable from "./charts/temperature-table";
+import HumidityTable from "./charts/humidity-table";
+import ShareData from "./share/share";
+import { fetchLocation, fetchSensorData } from "../../api";
 
 const pageStyles = (theme) => ({
   componentContainer: {
@@ -16,59 +19,86 @@ const pageStyles = (theme) => ({
   divider: {
     backgroundColor: "white",
     width: "100%",
-    marginTop: "3.5%"
+    marginTop: "3.5%",
+    marginBottom: "3.5%",
   },
   worldmapGrid: {
     width: "580px",
-    height: "650px"
-  }
+    height: "550px",
+  },
 });
 
-const Dashboard = (props) => {
-  const { classes } = props;
-  const [locationData, setLocationData] = React.useState({});
+class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      locationData: {},
+      sensorData: {},
+    };
+  }
 
-  React.useEffect(() => {
-    let isMounted = true;
+  componentDidMount() {
     let formJSON = JSON.stringify({
-      deviceID: props.deviceID
+      deviceID: this.props.deviceID,
     });
-    fetchLocation(formJSON)
-    .then((value) => {
-      if(value.statusCode === 200 && isMounted) {
-        setLocationData({
-          countryCode: value.countryCode,
-          location: value.location
-        })
+    fetchLocation(formJSON).then((value) => {
+      if (value.statusCode === 200) {
+        this.setState({
+          locationData: {
+            countryCode: value.countryCode,
+            location: value.location,
+          },
+        });
+      } else {
+        this.setState({
+          locationData: {
+            countryCode: "GB",
+            location: "Greenwich / London",
+          },
+        });
       }
-      else {
-        if(isMounted) {
-          setLocationData({
-            countryCode: "UK",
-            location: "Greenwich / London"
-          })
-        }
-      }
-    })
-  }, [])
+    });
+    fetchSensorData(formJSON).then((value) => {
+      this.setState({
+        sensorData: value,
+      });
+    });
+  }
 
-  return (
-    <Container className={classes.componentContainer} maxWidth="lg">
-      <Grid container spacing={3}>
-        <Grid item sm={6} xs={12}>
-          <TemperatureChart />
+  render() {
+    const { classes } = this.props;
+    return (
+      <Container className={classes.componentContainer} maxWidth="lg">
+        <Grid container spacing={3}>
+          <Grid className={classes.worldmapGrid} item xs={12}>
+            <LocationMap
+              closeProgress={this.props.closeProgress}
+              locationData={this.state.locationData}
+            />
+          </Grid>
+          <Divider className={classes.divider} />
+          <Grid item sm={6} xs={12}>
+            <TemperatureChart sensorData={this.state.sensorData} />
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <HumidityChart sensorData={this.state.sensorData} />
+          </Grid>
+          <Divider className={classes.divider} />
+          <Grid item md={6} sm={12} xs={12}>
+            <TemperatureTable sensorData={this.state.sensorData} />
+          </Grid>
+          <Grid item md={6} sm={12} xs={12}>
+            <HumidityTable sensorData={this.state.sensorData} />
+          </Grid>
+          <Divider className={classes.divider} />
+          <Grid item xs={12}>
+            <ShareData sensorData={this.state.sensorData} />
+          </Grid>
+          <Divider className={classes.divider} />
         </Grid>
-        <Grid item sm={6} xs={12}>
-          <HumidityChart />
-        </Grid>
-        <Divider className={classes.divider} />
-        <Grid className={classes.worldmapGrid} item xs={12}>
-          <LocationMap locationData={locationData} />
-        </Grid>
-      </Grid>
-      <Divider className={classes.divider} />
-    </Container>
-  );
-};
+      </Container>
+    );
+  }
+}
 
 export default withStyles(pageStyles)(Dashboard);

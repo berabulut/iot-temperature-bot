@@ -1,6 +1,11 @@
 import React from "react";
 import { WorldMap } from "react-svg-worldmap";
-import { withStyles, Typography } from "@material-ui/core";
+import {
+  withStyles,
+  Typography,
+  Backdrop,
+  CircularProgress,
+} from "@material-ui/core";
 import "./world-map.css";
 
 const pageStyles = (theme) => ({
@@ -11,7 +16,6 @@ const pageStyles = (theme) => ({
   },
   title: {
     color: "white",
-    marginTop: "5.5%",
     marginBottom: "3.5%",
     fontWeight: "700",
   },
@@ -41,6 +45,7 @@ const LocationMap = (props) => {
       ]);
       setTimeout(() => {
         setFetched(true);
+        props.closeProgress();
       }, 3500);
     }
   }, [props]);

@@ -4,7 +4,7 @@ const { fetchTemperature, fetchLocation, checkIfUserExists, createNewUser, getNu
 const { reverseCoordinates } = require("./handler-functions/location");
 const { resolveContent } = require("nodemailer/lib/shared");
 
-login("tesstx@gmail.com", "1223")
+fetchTemperature("1001")
 .then((val) => {
   console.log(val)
 })

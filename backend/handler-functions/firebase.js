@@ -8,11 +8,10 @@ admin.initializeApp({
 });
 
 const db = admin.database();
-const temperature_ref = db.ref("/sicaklik");
 
-const fetchTemperature = () =>
-  // fetch temperature info of arduino's sensor from firebase
+const fetchTemperature = (deviceID) =>   // fetch temperature data from firebase
   new Promise((resolve, reject) => {
+    const temperature_ref = db.ref(`/${deviceID}/sensor`);
     temperature_ref
       .once("value", function (snapshot) {
         const data = snapshot.val(); //Data is in JSON format.

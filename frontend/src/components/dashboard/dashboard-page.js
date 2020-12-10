@@ -7,6 +7,8 @@ import {
   Toolbar,
   Typography,
   IconButton,
+  CircularProgress,
+  Backdrop
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import Dashboard from "./dashboard";
@@ -23,11 +25,20 @@ const pageStyles = (theme) => ({
   appbar: {
     background: "#4d5aa5",
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 });
 
 const DashboardPage = (props) => {
   const storeStates = useStoreState(GlobalStates);
   const { classes } = props;
+  const [open, setOpen] = React.useState(false);
+
+  const closeProgress = () => {
+    setOpen(false);
+  }
 
   if (storeStates.loginStatus || props.location.state.loginStatus) {
     return (
@@ -37,8 +48,12 @@ const DashboardPage = (props) => {
             <Typography variant="h6">DEVICE-ID:{props.location.state.deviceID || storeStates.deviceID}</Typography>
           </Toolbar>
         </AppBar>
+        <Backdrop className={classes.backdrop} open={open}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <Dashboard
           deviceID={props.location.state.deviceID || storeStates.deviceID}
+          closeProgress={closeProgress}
         />
       </div>
     );
