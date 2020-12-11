@@ -7,7 +7,7 @@ import DashboardPage from "./components/dashboard/dashboard-page";
 const Routes = (props) => (
   <Router>
     <Switch>
-      <Route exact path="/iot-temperature-bot" component={LoginPage} />
+      <Route exact path="/" component={LoginPage} />
       <Route exact path="/iot-temperature-bot/register" component={RegisterPage} />
       <Route
         to={{
