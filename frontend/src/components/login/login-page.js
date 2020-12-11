@@ -71,7 +71,7 @@ const LoginPage = (props) => {
           className={classes.createAccountLink}
           variant="subtitle1"
           onClick={() => {
-            history.push("/iot-temperature-bot/register");
+            history.push("/register");
           }}
         >
           Register now!

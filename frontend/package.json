@@ -1,6 +1,5 @@
 {
   "name": "frontend",
-  "homepage": "http://berabulut.github.io/iot-temperature-bot",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -68,7 +68,7 @@ const RegisterPage = (props) => {
         <Link
           className={classes.createAccountLink}
           variant="subtitle1"
-          href="/iot-temperature-bot"
+          href="/"
         >
           Login
         </Link>
