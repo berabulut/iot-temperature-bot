@@ -53,7 +53,7 @@ const LoginForm = (props) => {
           });
           setTimeout(() => {
             history.push({
-              pathname: `/dashboard/id:${value.deviceID}`,
+              pathname: `/iot-temperature-bot/dashboard/id:${value.deviceID}`,
               state: { loginStatus: true, deviceID: value.deviceID },
             });
           }, 400);

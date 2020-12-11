@@ -50,7 +50,7 @@ const RegisterForm = (props) => {
         if (value.statusCode === 201) {
           props.openAlert("success", value.message);
           setTimeout(() => {
-            history.push("/");
+            history.push("/iot-temperature-bot");
           }, 750);
         } else if (value.statusCode === 200) {
           props.openAlert("error", value.message);

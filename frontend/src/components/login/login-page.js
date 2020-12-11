@@ -3,6 +3,7 @@ import { withStyles, Typography, Link } from "@material-ui/core";
 import RegisterForm from "./login-form";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { useHistory } from "react-router-dom";
 
 export const pageStyles = (theme) => ({
   container: {
@@ -43,6 +44,7 @@ const LoginPage = (props) => {
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertType, setAlertType] = React.useState("success");
   const [message, setMessage] = React.useState("");
+  const history = useHistory();
   const closeAlert = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -68,7 +70,9 @@ const LoginPage = (props) => {
         <Link
           className={classes.createAccountLink}
           variant="subtitle1"
-          href="/register"
+          onClick={() => {
+            history.push("/iot-temperature-bot/register");
+          }}
         >
           Register now!
         </Link>
