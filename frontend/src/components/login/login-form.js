@@ -1,5 +1,14 @@
 import React from "react";
-import { Paper, withStyles, Grid, TextField, Button } from "@material-ui/core";
+import {
+  Paper,
+  withStyles,
+  Grid,
+  TextField,
+  Button,
+  Typography,
+  CircularProgress,
+  Backdrop,
+} from "@material-ui/core";
 import { Face, Fingerprint } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 import { loginUser } from "../../api";
@@ -19,12 +28,22 @@ const formStyles = (theme) => ({
   gridContainer: {
     paddingTop: "15px",
   },
+  error: {
+    fontWeight: "600",
+    color: "red",
+    paddingBottom: "20px",
+    display: "block",
+  },
 });
 
 const LoginForm = (props) => {
   const { classes } = props;
   const [mailInput, setMailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
+  const [error, setError] = React.useState({
+    status: false,
+    message: "",
+  });
   const history = useHistory();
 
   const handleChange = (e) => {
@@ -35,33 +54,73 @@ const LoginForm = (props) => {
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    let formJSON = JSON.stringify({
-      email: mailInput,
-      password: passwordInput,
-    });
+  const handleKeypress = (e) => {
+    //it triggers by pressing the enter key
+    if (e.which === 13) {
+      handleSubmit(e);
+    }
+  };
 
-    loginUser(formJSON)
-      .then((value) => {
-        if (value.statusCode !== 200) {
-          props.openAlert("error", "Something is wrong!");
-        } else if (value.statusCode === 200) {
-          GlobalStates.update((s) => {
-            s.loginStatus = true;
-            s.deviceID = value.deviceID
-          });
-          setTimeout(() => {
-            history.push({
-              pathname: `/dashboard/id:${value.deviceID}`,
-              state: { loginStatus: true, deviceID: value.deviceID },
-            });
-          }, 400);
-        }
-      })
-      .catch((err) => {
-        props.openAlert("error", err);
+  const validateEmail = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const isEmpty = (input) => {
+    if (input.length > 1) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const handleSubmit = () => {
+    if (validateEmail(mailInput) && !isEmpty(passwordInput)) {
+      setError({
+        status: false,
+        message: "",
       });
+
+      props.openProgress();
+
+      let formJSON = JSON.stringify({
+        email: mailInput,
+        password: passwordInput,
+      });
+
+      loginUser(formJSON)
+        .then((value) => {
+          if (value.statusCode !== 200) {
+            props.openAlert("error", "Something is wrong!");
+            props.closeProgress();
+          } else if (value.statusCode === 200) {
+            GlobalStates.update((s) => {
+              s.loginStatus = true;
+              s.deviceID = value.deviceID;
+            });
+            setTimeout(() => {
+              history.push({
+                pathname: `/dashboard/id:${value.deviceID}`,
+                state: { loginStatus: true, deviceID: value.deviceID },
+              });
+            }, 400);
+          }
+        })
+        .catch((err) => {
+          props.openAlert("error", err);
+          props.closeProgress();
+        });
+    } else if (!validateEmail(mailInput)) {
+      setError({
+        status: true,
+        message: "Not a valid email!",
+      });
+    } else if (isEmpty(passwordInput)) {
+      setError({
+        status: true,
+        message: "Password input can't be empty!",
+      });
+    }
   };
 
   return (
@@ -85,6 +144,7 @@ const LoginForm = (props) => {
               autoFocus
               required
               onChange={handleChange}
+              onKeyPress={handleKeypress}
             />
           </Grid>
         </Grid>
@@ -105,6 +165,7 @@ const LoginForm = (props) => {
               fullWidth
               required
               onChange={handleChange}
+              onKeyPress={handleKeypress}
             />
           </Grid>
         </Grid>
@@ -123,6 +184,11 @@ const LoginForm = (props) => {
             Login
           </Button>
         </Grid>
+        {error.status === true && (
+          <Typography className={classes.error} variant="p">
+            {error.message}
+          </Typography>
+        )}
       </div>
     </Paper>
   );

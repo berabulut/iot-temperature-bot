@@ -22,7 +22,7 @@ const TemperatureTable = (props) => {
   const [data, setData] = React.useState([]);
   const { classes } = props;
   React.useEffect(() => {
-    if (props.sensorData.records !== undefined) {
+    if (props.sensorData.records !== undefined && props.sensorData.records !== null) {
       setData([]);
       const data = Object.values(props.sensorData.records.sensor);
       for (let i = data.length; data.length - 6 < i; i--) {

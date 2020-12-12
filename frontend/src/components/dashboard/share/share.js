@@ -160,9 +160,6 @@ const ShareData = (props) => {
     return data[data.length - 1];
   };
 
-  React.useEffect(() => {
-    console.log(props);
-  }, [props]);
 
   return (
     <Paper className={classes.paper}>

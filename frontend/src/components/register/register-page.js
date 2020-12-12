@@ -1,5 +1,11 @@
 import React from "react";
-import { withStyles, Typography, Link } from "@material-ui/core";
+import {
+  withStyles,
+  Typography,
+  Link,
+  CircularProgress,
+  Backdrop,
+} from "@material-ui/core";
 import RegisterForm from "./register-form";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -38,28 +44,36 @@ const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 
-
 const RegisterPage = (props) => {
   const { classes } = props;
   const [openAlert, setOpenAlert] = React.useState(false);
-  const [alertType, setAlertType] = React.useState("success")
-  const [message, setMessage] = React.useState("")
+  const [alertType, setAlertType] = React.useState("success");
+  const [openProgress, setOpenProgress] = React.useState(false);
+  const [message, setMessage] = React.useState("");
   const closeAlert = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-  
+
     setOpenAlert(false);
   };
   const OpenAlert = (alertType, message) => {
-    setMessage(message)
-    setAlertType(alertType)
+    setMessage(message);
+    setAlertType(alertType);
     setTimeout(() => {
       setOpenAlert(true);
-    }, 200)
-  }
+    }, 200);
+  };
+
+  const OpenProgress = () => {
+    setOpenProgress(true);
+  };
+
   return (
     <div className={classes.container}>
+      <Backdrop className={classes.backdrop} open={openProgress}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className={classes.wrapper}>
         <Typography className={classes.formTitle} variant="h4">
           REGISTER
@@ -69,6 +83,7 @@ const RegisterPage = (props) => {
           className={classes.createAccountLink}
           variant="subtitle1"
           href="/"
+          onClick={OpenProgress}
         >
           Login
         </Link>

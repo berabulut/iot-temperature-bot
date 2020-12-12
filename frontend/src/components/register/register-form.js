@@ -51,7 +51,7 @@ const RegisterForm = (props) => {
           props.openAlert("success", value.message);
           setTimeout(() => {
             history.push("/");
-          }, 750);
+          }, 1750);
         } else if (value.statusCode === 200) {
           props.openAlert("error", value.message);
         } else {

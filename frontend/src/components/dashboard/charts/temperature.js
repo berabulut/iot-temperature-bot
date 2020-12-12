@@ -19,7 +19,7 @@ const TemperatureChart = (props) => {
   const { classes } = props;
   const [percentage, setPercentage] = React.useState(24);
   React.useEffect(() => {
-    if (props.sensorData.records !== undefined) {
+    if (props.sensorData.records !== undefined && props.sensorData.records !== null) {
       const data = Object.values(props.sensorData.records.sensor);
       setPercentage(data[data.length - 1].temperature);
     }
