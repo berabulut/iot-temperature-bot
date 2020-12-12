@@ -1,8 +1,8 @@
-#include <ESP8266WiFi.h> // esp8266 library
-#include <ESP8266HTTPClient.h>
-#include <FirebaseESP8266.h> // firebase library
+#include <ESP8266WiFi.h> 
+#include <ESP8266HTTPClient.h> 
+#include <FirebaseESP8266.h> 
 #include <ArduinoJson.h>
-#include <WiFiUdp.h>
+#include <WiFiUdp.h> 
 #include <NTPClient.h>
 #include "DHT.h"
 
@@ -23,10 +23,16 @@ String key = ""; // Google Cloud Api key for GEOLOCATION Api
 uint8_t DHTPin = D2;
 DHT dht(DHTPin, DHTTYPE); // Initialize DHT sensor.
 
-char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+
 const long utcOffsetInSeconds = 10800;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
+
+//Week Days
+String weekDays[7]={"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+
+//Month names
+String months[12]={"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 void setup()
 {
@@ -205,10 +211,10 @@ void updateFirebaseTime(String location, String field)
 void useSensorData(float temperature, float humidity)
 {
   String time = timeClient.getFormattedTime();
-  String firebaseLocation[3] = {"/", "/", "/"};
-  String firebaseSubLocation[3] = {"/temperature", "/humidity", "/time"};
+  String firebaseLocation[4] = {"/", "/", "/", "/"};
+  String firebaseSubLocation[4] = {"/temperature", "/humidity", "/time", "/date"};
 
-  for(int i = 0; i < 3; i++) {
+  for(int i = 0; i < 4; i++) {
         firebaseLocation[i] += DEVICE_ID;
         firebaseLocation[i] += "/sensor/";
         firebaseLocation[i] += time;
@@ -218,4 +224,22 @@ void useSensorData(float temperature, float humidity)
   updateFirebaseDHT(firebaseLocation[0], temperature);
   updateFirebaseDHT(firebaseLocation[1], humidity);
   updateFirebaseTime(firebaseLocation[2], time);
+  updateFirebaseTime(firebaseLocation[3], returnDatenTime());
+}
+
+String returnDatenTime() {
+  unsigned long epochTime = timeClient.getEpochTime();
+  String formattedTime = timeClient.getFormattedTime();
+  int currentHour = timeClient.getHours();
+  int currentMinute = timeClient.getMinutes();
+  int currentSecond = timeClient.getSeconds();
+  String weekDay = weekDays[timeClient.getDay()];
+  //Get a time structure
+  struct tm *ptm = gmtime ((time_t *)&epochTime); 
+  int monthDay = ptm->tm_mday;
+  int currentMonth = ptm->tm_mon+1;
+  String currentMonthName = months[currentMonth-1];
+  int currentYear = ptm->tm_year+1900;
+  String currentDate = String(monthDay) + "-" + String(currentMonth)  + "-" + String(currentYear) + " / " + formattedTime;
+  return currentDate;
 }
