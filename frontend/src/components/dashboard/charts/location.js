@@ -2,9 +2,7 @@ import React from "react";
 import { WorldMap } from "react-svg-worldmap";
 import {
   withStyles,
-  Typography,
-  Backdrop,
-  CircularProgress,
+  Typography
 } from "@material-ui/core";
 import "./world-map.css";
 

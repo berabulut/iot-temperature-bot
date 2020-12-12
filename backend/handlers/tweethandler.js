@@ -8,11 +8,11 @@ module.exports.tweet = async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const promise = new Promise((resolve, reject) => {
     const userData = JSON.parse(event.body);
-    const date = dateFormat(new Date());
+    const date = userData.date;
     const temperature = userData.temperature;
     const humidity = userData.humidity;
     const location = userData.location;
-    const text = `${location},  ${date}, Temperature : ${temperature}°C, Humidity : ${humidity}`;
+    const text = `${location},  ${date}, Temperature : ${temperature}°C, Humidity : ${humidity}%`;
     tweetTemperature(text)
       .then(() => {
         const response = {

@@ -4,11 +4,10 @@ import {
   Typography,
   TextField,
   Paper,
-  Icon,
   Button,
   List,
   ListItem,
-  ListItemIcon,
+  Grid,
   IconButton,
   ListItemText,
   ListItemSecondaryAction,
@@ -27,18 +26,15 @@ const pageStyles = (theme) => ({
     marginBottom: "1.5%",
   },
   paper: {
-    minHeight: "300px",
     width: "100%",
-    height: "100%",
+    height: "auto",
+    overflow: "auto",
+    overflowX: "hidden",
   },
   innerContainer: {
     position: "relative",
-    top: "20%",
-    WebkitTransform: "translateY(-40%)",
-    MsTransform: "translateY(-40%)",
-    transform: "translateY(-40%)",
     height: "auto",
-    overflow: "auto",
+    width: "100%",
   },
   bottomContainer: {
     position: "relative",
@@ -48,6 +44,7 @@ const pageStyles = (theme) => ({
     transform: "translateY(-40%)",
     height: "auto",
     overflow: "auto",
+    marginBottom: "15px",
   },
   button: {
     position: "relative",
@@ -71,12 +68,16 @@ const pageStyles = (theme) => ({
     marginRight: "-20px",
   },
   mailList: {
-    float: "right",
-    marginRight: "5.5%",
+    width: "95%",
   },
   mail: {
-    marginRight: "5.5%"
-  }
+    marginRight: "5.5%",
+  },
+  gridContainer: {
+    width: "100%",
+    marginBottom: "50px",
+    marginTop: "50px",
+  },
 });
 
 const ShareData = (props) => {
@@ -116,6 +117,14 @@ const ShareData = (props) => {
     }
   };
 
+  const isEmpty = () => {
+    if (mails.length >= 1) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const removeFromList = (emailIndex) => {
     setMail(
       mails.filter((email) => {
@@ -125,19 +134,29 @@ const ShareData = (props) => {
   };
 
   const sendMailOnClick = () => {
-    let formJSON = JSON.stringify({
-      location: props.locationData.location,
-      mails: mails,
-      temperature: returnLastObject(props.sensorData.records.sensor)
-        .temperature,
-      humidity: returnLastObject(props.sensorData.records.sensor).humidity,
-    });
+    if (!isEmpty()) {
+      let formJSON = JSON.stringify({
+        location: props.locationData.location,
+        mails: mails,
+        temperature: returnLastObject(props.sensorData.records.sensor)
+          .temperature,
+        humidity: returnLastObject(props.sensorData.records.sensor).humidity,
+        date: returnLastObject(props.sensorData.records.sensor).date,
+      });
 
-    sendMail(formJSON).then((value) => {
-      if (value.statusCode === 200) {
-        console.log(value.message);
-      }
-    });
+      sendMail(formJSON)
+        .then((value) => {
+          if (value.statusCode === 200) {
+            console.log(value.message);
+            props.openAlert("success", value.message);
+          }
+        })
+        .catch((err) => {
+          props.openAlert("error", err);
+        });
+    } else {
+      props.openAlert("warning", "Email list can't be empty!");
+    }
   };
 
   const tweetOnClick = () => {
@@ -146,13 +165,18 @@ const ShareData = (props) => {
       temperature: returnLastObject(props.sensorData.records.sensor)
         .temperature,
       humidity: returnLastObject(props.sensorData.records.sensor).humidity,
+      date: returnLastObject(props.sensorData.records.sensor).date,
     });
 
-    tweet(formJSON).then((value) => {
-      if (value.statusCode === 200) {
-        console.log(value.message);
-      }
-    });
+    tweet(formJSON)
+      .then((value) => {
+        if (value.statusCode === 200) {
+          props.openAlert("success", value.message);
+        }
+      })
+      .catch((err) => {
+        props.openAlert("error", err);
+      });
   };
 
   const returnLastObject = (dataObject) => {
@@ -160,50 +184,55 @@ const ShareData = (props) => {
     return data[data.length - 1];
   };
 
-
   return (
     <Paper className={classes.paper}>
       <div className={classes.innerContainer}>
-        <TextField
-          className={classes.mailInput}
-          id="outlined-basic"
-          label="Email"
-          variant="outlined"
-          type="email"
-          onChange={handleChange}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          endIcon={<AddIcon />}
-          onClick={addButtonOnClick}
-        >
-          Add
-        </Button>
-        {mails.length > 0 && (
-          <List
-            className={classes.mailList}
-            component="nav"
-            aria-label="main mailbox folders"
-          >
-            {mails.map((value, key) => {
-              return (
-                <ListItem id={key} button>
-                  <ListItemText primary={value} />
-                  <ListItemSecondaryAction
-                    onClick={() => removeFromList(key)}
-                    className={classes.deleteButton}
-                  >
-                    <IconButton edge="end" aria-label="comments">
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
-            })}
-          </List>
-        )}
+        <Grid className={classes.gridContainer} container>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              className={classes.mailInput}
+              id="outlined-basic"
+              label="Email"
+              variant="outlined"
+              type="email"
+              onChange={handleChange}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              endIcon={<AddIcon />}
+              onClick={addButtonOnClick}
+            >
+              Add
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            {mails.length > 0 && (
+              <List
+                className={classes.mailList}
+                component="nav"
+                aria-label="main mailbox folders"
+              >
+                {mails.map((value, key) => {
+                  return (
+                    <ListItem id={key} button>
+                      <ListItemText primary={value} />
+                      <ListItemSecondaryAction
+                        onClick={() => removeFromList(key)}
+                        className={classes.deleteButton}
+                      >
+                        <IconButton edge="end" aria-label="comments">
+                          <DeleteIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  );
+                })}
+              </List>
+            )}
+          </Grid>
+        </Grid>
       </div>
       <div className={classes.bottomContainer}>
         <Button

@@ -6,7 +6,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
 } from "recharts";
 import { withStyles, Typography } from "@material-ui/core";
 import "./table.css";
