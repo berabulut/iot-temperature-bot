@@ -7,7 +7,7 @@ Node.js                              |  AWS Lambda                             |
 ![node.js](./images/banners/node.png)  |![node.js](./images/banners/lambda.png)| ![react](./images/banners/react.png) | ![arduino](./images/banners/arduino.png)| ![firebase](./images/banners/firebase.png)
 
 
-##What is it?
+## What is it?
 
 It's an IOT application that lets you measure temperature and humidity of your device's environment and it finds your device's location. 
 
