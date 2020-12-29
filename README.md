@@ -28,7 +28,7 @@ There is a DHT 11 (for measuring temperature and humidity) sensor connected to N
 Using Google's Geolocation API for finding connected router's latitude and longitude.
 Around every 30 seconds sending sensor and location data to Firebase.  
 
-<br/> ![Firebase-2](./images/Fbase2.png) <br/>  <hr>
+<br/> ![Firebase-2](./images/fbase2.png) <br/>  <hr>
 ![Firebase-1](./images/Fbase1.png) 
 
 ### Backend
